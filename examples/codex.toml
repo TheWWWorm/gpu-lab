@@ -1,0 +1,4 @@
+# Merge into the user's existing Codex config.toml.
+[mcp_servers.gpu_lab]
+command = "/usr/local/bin/gpu-lab"
+args = ["mcp"]

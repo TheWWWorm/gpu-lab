@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "gpu_lab": {
+      "type": "stdio",
+      "command": "/usr/local/bin/gpu-lab",
+      "args": ["mcp"],
+      "env": {}
+    }
+  }
+}

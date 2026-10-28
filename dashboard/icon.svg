@@ -1,0 +1,2 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="13" fill="#193b6a"/><g fill="none" stroke="#e3efff" stroke-width="3" stroke-linejoin="round"><rect x="13" y="14" width="38" height="14" rx="2"/><rect x="13" y="36" width="38" height="14" rx="2"/><path d="M20 21h16M20 43h16"/></g><g fill="#83c3f5"><circle cx="44" cy="21" r="2"/><circle cx="44" cy="43" r="2"/></g></svg>

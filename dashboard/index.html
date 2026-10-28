@@ -1,0 +1,61 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#193b6a">
+  <title>GPU Lab · Activity</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#jobs-title">Skip to jobs</a>
+  <header class="masthead">
+    <div class="brand"><img src="/icon.svg" alt="" width="34" height="34"><span>GPU Lab</span><span class="header-divider"></span><span class="page-name">Activity</span></div>
+    <div class="connection" id="connection" role="status"><span class="status-dot"></span><span id="connection-text">Connecting…</span></div>
+  </header>
+  <main>
+    <div class="page-heading"><div><h1>Shared GPU activity</h1><p>Running jobs, queued work and virtual displays.</p></div><span class="refresh-note">Updates every 2 seconds</span></div>
+    <section id="notice" class="notice" hidden aria-live="polite"><p id="notice-text"></p><button id="retry" type="button">Try again</button></section>
+    <section aria-label="GPU load" class="gpu-grid" id="gpus"><div class="loading-panel">Reading GPU load…</div></section>
+    <p class="load-caption">Load and memory include all applications. GPU 0 also drives your monitors.</p>
+    <div class="workspace">
+      <section class="jobs-panel" aria-labelledby="jobs-title">
+        <div class="section-heading"><h2 id="jobs-title" tabindex="-1">Jobs <span id="job-count" class="count">0</span></h2><span id="queue-summary" class="muted">Loading queues…</span></div>
+        <div class="toolbar">
+          <div class="filters" role="group" aria-label="Filter by job state">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="running" aria-pressed="false">Running <span id="running-count">0</span></button>
+            <button type="button" data-filter="queued" aria-pressed="false">Queued <span id="queued-count">0</span></button>
+            <button type="button" data-filter="finished" aria-pressed="false">Finished</button>
+          </div>
+          <div class="search-row"><label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Find a job…" aria-label="Find a job by name, ID or folder"></label><label class="gpu-filter"><span class="sr-only">Filter by GPU</span><select id="gpu-filter"><option value="all">Both GPUs</option><option value="0">GPU 0</option><option value="1">GPU 1</option></select></label></div>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th scope="col">Job</th><th scope="col">State</th><th scope="col">GPU</th><th scope="col" class="duration-cell">Time</th></tr></thead><tbody id="jobs"></tbody></table></div>
+        <div id="empty-jobs" class="empty-state" hidden><h3>No matching jobs</h3><p>Try another filter or search.</p><button type="button" id="clear-filters">Clear filters</button></div>
+        <div class="table-footer"><span id="history-note">Recent job history</span><button type="button" id="show-more" hidden>Show more</button></div>
+      </section>
+      <aside class="inspector" aria-labelledby="inspector-title">
+        <div class="inspector-heading"><h2 id="inspector-title">Job inspector</h2><span class="inspector-caption">Select any job</span><button type="button" id="back-to-jobs">Back to jobs</button></div>
+        <div id="no-selection" class="empty-state"><h3>Your jobs will appear here</h3><p>Select a job to see its virtual display, output and details.</p></div>
+        <div id="selection" hidden>
+          <div class="selected-job"><div class="selected-meta"><span id="selected-badge" class="badge"></span><span id="selected-location" class="muted"></span></div><h3 id="selected-title"></h3><p id="selected-reason" class="waiting-reason" hidden></p></div>
+          <div class="inspector-tabs" role="tablist" aria-label="Job information"><button id="tab-preview" type="button" role="tab" aria-controls="panel-preview" aria-selected="true" tabindex="0" data-tab="preview">Preview</button><button id="tab-logs" type="button" role="tab" aria-controls="panel-logs" aria-selected="false" tabindex="-1" data-tab="logs">Logs</button><button id="tab-details" type="button" role="tab" aria-controls="panel-details" aria-selected="false" tabindex="-1" data-tab="details">Details</button></div>
+          <section id="panel-preview" role="tabpanel" aria-labelledby="tab-preview">
+            <div class="preview-area" id="preview-area"><img id="preview" alt="Selected job's isolated virtual display" hidden><div id="preview-empty" class="preview-empty"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="8" width="36" height="26" rx="2"/><path d="M17 41h14M24 34v7"/></svg><strong id="preview-empty-title">Waiting for a display</strong><span id="preview-empty-message">The preview appears when this job starts.</span></div></div>
+            <div class="preview-toolbar"><span id="preview-state" class="muted" aria-live="polite">Snapshot preview</span><div><button id="pause-preview" type="button" aria-pressed="false">Pause</button><button id="enlarge-preview" type="button" disabled>Enlarge</button></div></div>
+            <p class="preview-help">An isolated virtual display. Refreshes every 2 seconds while you watch.</p>
+          </section>
+          <section id="panel-logs" role="tabpanel" aria-labelledby="tab-logs" hidden><div class="log-toolbar"><span>Recent output <span id="log-state" class="muted"></span></span><button id="copy-logs" type="button" disabled>Copy logs</button></div><div id="logs-error" class="inline-error" hidden></div><h4 class="log-label">Standard output</h4><pre id="stdout" class="log-output" tabindex="0">Loading output…</pre><h4 class="log-label">Standard error</h4><pre id="stderr" class="log-output stderr" tabindex="0">Loading output…</pre><p id="log-note" class="preview-help">Latest 32 KB per stream.</p></section>
+          <section id="panel-details" role="tabpanel" aria-labelledby="tab-details" hidden><dl id="details"></dl><h4 class="detail-label">Command</h4><pre id="command" class="command" tabindex="0"></pre><p class="preview-help">Memory is an estimate for scheduling, not a quota.</p></section>
+          <div class="inspector-footer"><span id="selected-id" class="mono"></span><span id="selected-duration"></span></div>
+        </div>
+      </aside>
+    </div>
+    <footer class="page-footer"><span>GPU Lab · Local workstation</span><span>Up to 3 isolated jobs per GPU · Heavy jobs run alone among Lab jobs on their GPU</span></footer>
+  </main>
+  <dialog id="preview-dialog"><div class="dialog-heading"><h2 id="dialog-title">Virtual display</h2><div><button id="download-preview" type="button">Save PNG</button><button id="close-preview" type="button" aria-label="Close enlarged preview">Close</button></div></div><img id="large-preview" alt="Enlarged snapshot of the selected job's virtual display"><p id="dialog-note">Snapshot preview · updates every 2 seconds</p></dialog>
+</body>
+</html>

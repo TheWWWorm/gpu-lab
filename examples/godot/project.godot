@@ -1,0 +1,13 @@
+config_version=5
+
+[application]
+config/name="GPU Lab Vulkan smoke test"
+
+[display]
+window/size/viewport_width=800
+window/size/viewport_height=600
+window/size/window_width_override=800
+window/size/window_height_override=600
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
