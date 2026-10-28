@@ -1,1 +1,2 @@
-Pillow>=13.0.0
+# Keep the supported minimum; pip selects the newest release compatible with Python.
+Pillow>=10.0

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Update the pinned GitHub checkout and Python setup actions to 7.0.1 and 7.1.0.
+- Preserve the Python 3.10-compatible Pillow requirement and avoid unnecessary minimum-version increases from Dependabot.
+- Check the newest compatible Pillow on Python 3.10–3.13 and the supported Pillow 10.0 minimum on Python 3.10 in CI.
+
 ## 4.0.0 — initial public source release
 
 - Durable shared queue with GPU selection at dispatch, idle-GPU preference, and a 20-second settling period before sharing.

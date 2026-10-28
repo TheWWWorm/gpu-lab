@@ -85,7 +85,7 @@ make test
 make check
 ```
 
-Unit tests run without a GPU or root. Linux and `dbus-run-session` are needed for process lifecycle tests; Node.js is used only for the dashboard syntax check. CI runs these checks on Python 3.10, 3.12, and 3.13. Live GPU tests are opt-in and use the installed GPU Lab queue:
+Unit tests run without a GPU or root. Linux and `dbus-run-session` are needed for process lifecycle tests; Node.js is used only for the dashboard syntax check. CI runs these checks on Python 3.10–3.13 with the newest compatible Pillow and also tests the supported Pillow 10.0 minimum on Python 3.10. Live GPU tests are opt-in and use the installed GPU Lab queue:
 
 ```sh
 python scripts/smoke_test.py
