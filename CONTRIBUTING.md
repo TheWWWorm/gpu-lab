@@ -16,6 +16,8 @@ make check
 
 Install `dbus-daemon` if `dbus-run-session` is unavailable. `make check` also uses Node.js for syntax checking; the dashboard has no build step or npm runtime dependencies. The deterministic scheduler tests simulate both GPUs. Tests for job processes use temporary directories and CPU-only child programs.
 
+Keep `requirements.txt` compatible with the documented Python and distribution support. `Pillow>=10.0` already permits newer releases; pip selects a version supported by the interpreter. CI checks the newest compatible Pillow on Python 3.10–3.13 and Pillow 10.0 on Python 3.10. Dependabot uses `increase-if-necessary` for pip so an already permitted release does not automatically raise the minimum. Raise the minimum only when the code or a reviewed dependency policy requires it, and update the compatibility checks at the same time.
+
 Optional hardware checks require a separately installed GPU Lab. `python scripts/smoke_test.py --probe` submits only its own jobs, uses automatic assignment, and cleans up its unfinished work. Use the assigned GPU as logical device 0 inside a job. Optional Godot examples live in `examples/godot/`.
 
 Do not run installation or service restarts as routine tests. The fresh setup preview and prerequisites check are read-only; installer tests mock mutations. A clean-machine installation still needs separate validation on suitable hardware.
